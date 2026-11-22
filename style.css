@@ -1,0 +1,414 @@
+/*
+  VOICE   Quiet, personal, a little playful — an indie magazine's opening spread.
+  IDEA    "A Personal Episode of PalmSakk": the page reads like episode 001,
+          from masthead to the つづく end card.
+  PICTURE The name itself, set huge, with a vertical katakana annotation.
+  TYPE    Space Grotesk (EN) · Noto Sans JP (JP, subset to the glyphs used).
+  LAYOUT  One centred 460px column, left-aligned, asymmetric offsets, thin rules.
+*/
+
+/* ---------- Tokens ---------- */
+:root {
+  --bg: #F8FAFD;          /* Soft Off-White   */
+  --ink: #202938;         /* Deep Ink Navy    */
+  --blue: #3B73D1;        /* Editorial Blue   */
+  --sky: #DCE9FF;         /* Soft Sky Blue    */
+  --lavender: #EDE8FA;    /* Muted Lavender   */
+  --rule: #DCE4EE;        /* Light Blue Gray  */
+  --slate: #718197;       /* Muted Slate — large/decorative text only */
+  --slate-text: #5E6D82;  /* Slate deepened for small text (WCAG AA 4.5:1) */
+
+  --font-en: "Space Grotesk", system-ui, -apple-system, "Segoe UI", "Noto Sans Thai", sans-serif;
+  --font-jp: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", "Noto Sans CJK JP", sans-serif;
+
+  --pad: clamp(1.25rem, 6vw, 1.75rem);
+  --max: 460px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --fast: 180ms;
+  --slow: 450ms;
+
+  color-scheme: light;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; min-width: 0; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.55 var(--font-en);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+.jp { font-family: var(--font-jp); }
+
+::selection { background: var(--sky); color: var(--ink); }
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Small editorial label */
+.label {
+  margin: 0;
+  font-size: 0.6875rem;          /* 11px */
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.label--muted { color: var(--slate-text); }
+
+/* ---------- Page ---------- */
+.page {
+  width: 100%;
+  max-width: var(--max);
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0 auto;
+  padding:
+    max(1.25rem, env(safe-area-inset-top))
+    max(var(--pad), env(safe-area-inset-right))
+    max(1.5rem, env(safe-area-inset-bottom))
+    max(var(--pad), env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+}
+
+main { flex: 1 0 auto; }
+
+/* Desktop: the column reads as a printed page on the table */
+@media (min-width: 720px) {
+  body { padding: 3rem 0; }
+  .page {
+    min-height: auto;
+    border-left: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+}
+
+/* ---------- 01 Masthead ---------- */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ---------- 02 Hero ---------- */
+.hero { padding: clamp(1.25rem, 3.5vh, 2.5rem) 0 clamp(1.5rem, 4vh, 2.5rem); }
+
+.chapter {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+.chapter__line {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.chapter .jp {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--slate-text);
+}
+
+.title { position: relative; }
+
+.brand {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(4.5rem, 27vw, 7.75rem);
+  line-height: 0.84;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+.brand span { display: block; }
+.brand__l1 { color: var(--ink); }
+.brand__l2 { color: var(--blue); margin-left: -0.04em; }
+
+/* Vertical katakana: a margin annotation, like furigana in a manga panel */
+.kana {
+  position: absolute;
+  top: 0.1em;
+  right: 0;
+  writing-mode: vertical-rl;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--slate);
+  border-right: 1px solid var(--blue);
+  padding-right: 0.45rem;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Tagline block sits off-axis: asymmetric but anchored */
+.lede {
+  margin: 1.5rem 0 0 18%;
+}
+.lede__rule {
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  background: var(--blue);
+  margin-bottom: 0.9rem;
+}
+/* With photo: figure left, words right — like a contributor page */
+.lede--photo {
+  margin-left: 0;
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+.lede__text { padding-top: 0.35rem; }
+.portrait { margin: 0; }
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border: 1px solid var(--ink);
+  background: var(--lavender);
+}
+.portrait figcaption {
+  margin-top: 0.45rem;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+.lede--photo .tagline { text-wrap: balance; }
+.lede--photo #topics { letter-spacing: 0.1em; }
+.nw { white-space: nowrap; }
+
+.tagline {
+  margin: 0 0 0.6rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- 03 Links ---------- */
+.links__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--ink);
+}
+
+.links__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.links__list li { border-bottom: 1px solid var(--rule); }
+
+.row {
+  --x: 0.75rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.25rem 0.5rem;
+  min-height: 4.5rem;              /* generous tap target */
+  margin: 0 calc(var(--x) * -1);
+  padding: 0.95rem var(--x) 0.95rem;
+  background-color: transparent;
+  transition: background-color var(--fast) var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* thin blue rule that draws in on hover */
+.row::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--blue);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 260ms var(--ease);
+}
+
+.row__index {
+  padding-top: 0.55rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--blue);
+  font-variant-numeric: tabular-nums;
+}
+
+.row__body {
+  display: flex;
+  flex-direction: column;
+  transition: transform 260ms var(--ease);
+}
+
+.row__name {
+  font-size: clamp(1.625rem, 7.4vw, 2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.row__desc {
+  margin-top: 0.3rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--slate-text);
+}
+.row__mail {
+  margin-top: 0.15rem;
+  font-size: 0.8125rem;
+  color: var(--ink);
+  overflow-wrap: break-word;
+}
+.has-copy { position: relative; }
+.has-copy .row__mail { padding-right: 4.5rem; }   /* room for the Copy button */
+
+/* Copy email: a real button beside (not inside) the mailto link */
+.copy {
+  position: absolute;
+  right: 0;
+  bottom: 0.1rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.15rem 0 0.5rem;
+  border: 0;
+  background: transparent;
+  font: 500 0.6875rem/1 var(--font-en);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.copy__text {
+  display: inline-block;
+  padding-bottom: 2px;
+  border-bottom: 1px solid currentColor;
+  transition: color var(--fast) var(--ease);
+}
+.copy:hover .copy__text { color: var(--ink); }
+.copy.is-done .copy__text { color: var(--ink); border-bottom-color: transparent; }
+
+.links__empty { padding: 1.25rem 0; }
+
+.row__arrow {
+  padding-top: 0.3rem;
+  color: var(--ink);
+  transition: transform 260ms var(--ease), color var(--fast) var(--ease);
+}
+.row__arrow svg { display: block; }
+
+/* Hover (pointer devices) + keyboard focus + tap */
+@media (hover: hover) {
+  a.row:hover { background-color: color-mix(in srgb, var(--sky) 60%, transparent); }
+  a.row:hover::before { transform: scaleY(1); }
+  a.row:hover .row__body { transform: translateX(4px); }
+  a.row:hover .row__arrow { transform: translate(3px, -3px); color: var(--blue); }
+}
+a.row:focus-visible { outline-offset: -2px; background-color: color-mix(in srgb, var(--sky) 60%, transparent); }
+a.row:focus-visible::before { transform: scaleY(1); }
+a.row:focus-visible .row__arrow { transform: translate(3px, -3px); color: var(--blue); }
+a.row:active { background-color: var(--sky); }
+a.row:active .row__body { transform: translateX(4px); }
+a.row:active .row__arrow { transform: translate(3px, -3px); color: var(--blue); }
+
+/* Unconfigured link: a clear preview state, never a fake destination */
+.row.is-pending { cursor: default; }
+.row.is-pending .row__name { color: var(--slate); }
+.row.is-pending .row__arrow { color: var(--rule); }
+.row__status {
+  align-self: flex-start;
+  margin-top: 0.55rem;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--lavender);
+  border-radius: 2px;
+}
+
+/* ---------- 04 Footer ---------- */
+.foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1rem;
+  margin-top: clamp(1.75rem, 5vh, 3rem);
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+.foot__end { text-align: right; }
+.foot__jp {
+  display: block;
+  font-family: var(--font-jp);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  margin-right: -0.12em;         /* optical: cancel trailing tracking */
+  line-height: 1.1;
+  color: var(--blue);
+}
+.foot__en { margin-top: 0.3rem; }
+.foot__left .label + .label { margin-top: 0.3rem; }
+
+/* ---------- Motion ---------- */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.js.is-ready .reveal {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--slow) var(--ease) calc(var(--i, 0) * 70ms),
+    transform var(--slow) var(--ease) calc(var(--i, 0) * 70ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    animation: none !important;
+  }
+  .js .reveal { opacity: 1; transform: none; }
+  a.row:hover .row__body, a.row:active .row__body,
+  a.row:hover .row__arrow, a.row:active .row__arrow { transform: none; }
+}
+
+/* ---------- Small phones ---------- */
+@media (max-width: 350px) {
+  .lede { margin-left: 10%; }
+  .lede--photo { margin-left: 0; grid-template-columns: 6rem minmax(0, 1fr); gap: 1rem; }
+  .kana { display: none; }
+}
