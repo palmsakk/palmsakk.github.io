@@ -19,7 +19,7 @@ window.PALMSAKK_CONFIG = {
   /* Photo beside the tagline. Set src: "" to remove it.
      Best as a portrait (3:4) image, around 360 × 480 px. */
   photo: {
-    src: "assets/img/palm.jpg",
+    src: "palm.jpg",
     alt: "Palm sitting on a railing outside a convenience store in Japan",
     caption: "Fig. 01 — Palm"
   },
